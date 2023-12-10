@@ -21,9 +21,11 @@
 
 - Executar no navegador ou em um programa:
 
-    1. Listar os pokemons de uma página da Pokédex
+    1. Listar os pokemons da primeira página ou de uma página específica da Pokédex
 
             http://localhost:8000/pokemons
+
+            http://localhost:8000/pokemons?pagina=2
 
     2. Detalhar um pokemon específico através de Id ou nome
 
