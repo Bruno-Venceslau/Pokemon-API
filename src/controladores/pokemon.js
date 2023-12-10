@@ -1,39 +1,41 @@
-const {listarPokemons, detalharPokemon} = require("utils-playground");
+const { listarPokemons, detalharPokemon } = require("utils-playground");
 
 const listarPokemon = async (req, res) => {
-    const {pagina} =  req.query;
+  const { pagina } = req.query;
 
-    if(pagina) {
-        let lista = await listarPokemons(pagina ?? 1);
-        lista = lista.results
-        return res.status(200).json(lista)
-    }
+  try {
+    let lista = await listarPokemons(pagina ?? 1);
+    lista = lista.results;
+    return res.status(200).json(lista);
 
-}
+  } catch (erro) {
+    return res.status(404).json(erro.message);
+  }
+};
 
-const pokemonDetalhesId = async (req, res) =>{
+const pokemonDetalhes = async (req, res) => {
+  const { idOrName } = req.params;
 
-    const {idPokemon} = req.params
+  try {
+    const detalhes = await detalharPokemon(idOrName);
 
-    const pokemonDetalhado = await detalharPokemon(Number(idPokemon));
+    const pokemonDetalhado = {
+      id: detalhes.id,
+      name: detalhes.name,
+      height: detalhes.height,
+      weight: detalhes.weight,
+      base_experience: detalhes.base_experience,
+      forms: detalhes.forms,
+      abilities: detalhes.abilities,
+      species: detalhes.species,
+    };
 
-    const {id, name, height, weight, base_experience, forms, abilities, species} = pokemonDetalhado
+    return res.status(200).json(pokemonDetalhado);
+    
+  } catch (erro) {
+    return res.status(404).json({ Erro: erro.message });
+  }
 
-   
-    return res.status(200).json({id, name, height, weight, base_experience, forms, abilities, species})
-}
+};
 
-
-const pokemonDeatlhesNome = async (req, res) =>{
-
-    const {idOrName} = req.params
-
-    const pokemonDetalhado = await detalharPokemon(idOrName);
-
-    const {id, name, height, weight, base_experience, forms, abilities, species} = pokemonDetalhado
-
-   
-    return res.status(200).json({id, name, height, weight, base_experience, forms, abilities, species})
-}
-
-module.exports = {listarPokemon, pokemonDeatlhesNome}
+module.exports = { listarPokemon, pokemonDetalhes };

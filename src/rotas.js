@@ -3,6 +3,6 @@ const rotas = express();
 const pokemons = require("./controladores/pokemon")
 
 rotas.get("/pokemons", pokemons.listarPokemon);
-rotas.get("/pokemon/:idOrName", pokemons.pokemonDeatlhesNome);
+rotas.get("/pokemons/:idOrName", pokemons.pokemonDetalhes);
 
 module.exports = rotas
